@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {styled} from "styled-components";
+import {useGlitch} from "react-powerglitch";
 
 const ButtonWrapper = styled.button<{disabled?: boolean}>`
     height: 37px;
@@ -22,11 +23,28 @@ const ButtonWrapper = styled.button<{disabled?: boolean}>`
 
 type ButtonProps = {
   children: React.ReactNode
+  toggleGlitch?: boolean
 } & React.ComponentPropsWithoutRef<'button'>
 
-const Button: React.FC<ButtonProps> = ({children, ...props}) => {
+const Button: React.FC<ButtonProps> = ({toggleGlitch, children, ...props}) => {
+  const glitch = useGlitch({
+    playMode: 'manual',
+    timing: {
+      duration: 3000
+    }
+  })
 
-  return <ButtonWrapper disabled={props.disabled} {...props}>
+  const {startGlitch, stopGlitch} = glitch
+
+  useEffect(() => {
+    if (toggleGlitch) {
+      startGlitch()
+    } else {
+      stopGlitch()
+    }
+  }, [toggleGlitch]);
+
+  return <ButtonWrapper disabled={props.disabled} ref={glitch.ref} {...props}>
     {children}
   </ButtonWrapper>
 }

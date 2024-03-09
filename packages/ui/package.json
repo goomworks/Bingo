@@ -5,7 +5,9 @@
   "exports": {
     "./button": "./src/button.tsx",
     "./card": "./src/card.tsx",
-    "./code": "./src/code.tsx"
+    "./code": "./src/code.tsx",
+    "./BotDetected": "./src/BotDetected.tsx",
+    "./CallerBoard": "./src/CallerBoard.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -28,6 +30,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/joy": "^5.0.0-beta.29",
     "react-colorful": "^5.6.1",
+    "react-powerglitch": "^1.0.3",
     "styled-components": "^6.1.8"
   }
 }

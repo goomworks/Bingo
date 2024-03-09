@@ -3686,6 +3686,11 @@ postcss@8.4.31:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
+powerglitch@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/powerglitch/-/powerglitch-2.3.2.tgz#3260ed57a4b186f78038cab8e2edfea4457566f9"
+  integrity sha512-nRKMttDRu0aOeu5/rUm0CFvwuaE3b7Klujjn0AIgoLUim0E2+4YpXZ76+2t9cJERQuFZ+7D36ywG7GLtRUSyMQ==
+
 prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
@@ -3774,6 +3779,13 @@ react-is@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
+
+react-powerglitch@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-powerglitch/-/react-powerglitch-1.0.3.tgz#19acd8572b28a6d515be76118c34cb68156fda8a"
+  integrity sha512-jYIcvZJQoRWKckOWfgc59Bju6tLiBl2sRkWIr8X8/8RYXd/e07H7k+jJXinlemM/IGGrcG0Iq0HmJbAP13FrVg==
+  dependencies:
+    powerglitch "^2.3.2"
 
 react@^18.2.0:
   version "18.2.0"

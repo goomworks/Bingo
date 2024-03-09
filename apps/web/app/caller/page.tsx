@@ -1,8 +1,10 @@
 "use client"
-import React, {useRef, useState} from "react";
+import React, {Dispatch, ReactElement, SetStateAction, useEffect, useRef, useState} from "react";
 import styles from "./page.module.css";
 import {rockSalt} from "web/fonts/googlefonts";
 import Button from "@repo/ui/button";
+import BotDetected from "@repo/ui/BotDetected";
+import CallerBoard from "@repo/ui/CallerBoard";
 
 const sayings = [
   "They don't make them like they used to.",
@@ -35,6 +37,42 @@ const getWinningNumber = (gameArray: number[]): { winningNumber: number, newGame
   }
 }
 
+const getRandom = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
+
+function* yieldWarningEventElement(): Generator<React.ReactElement> {
+  const warningElements = [...Array(10)].map((_, index) => {
+    return <div
+      className={styles.warning}
+      style={{
+        top: `${getRandom(20, 80)}%`,
+        left: `${getRandom(20, 80)}%`,
+        fontSize: `${Math.floor(Math.random() * (60 - 10 + 1)) + 10}px`,
+        zIndex: 2
+    }}
+      key={index}
+    >
+      <BotDetected/>
+    </div>
+  })
+
+  for (const el of warningElements) yield el;
+}
+
+const eventRunner = (eventGenerator: Generator<React.ReactElement>, elementSetter: Dispatch<SetStateAction<ReactElement[]>>) => {
+  const interval = setInterval(() => {
+    const next = eventGenerator.next()
+    if (!next.done) {
+      elementSetter(warningElements => [...warningElements, next.value])
+    } else {
+      clearInterval(interval)
+      setTimeout(() => elementSetter([]), 10000)
+    }
+  }, 1000)
+
+}
+
+const warningElementGenerator = yieldWarningEventElement()
+
 const Page: React.FC = () => {
   const gameArray = Array.from({length: 99}, (_, i) => i + 1)
   const [remainingItems, setRemainingItems] = useState(gameArray)
@@ -43,8 +81,13 @@ const Page: React.FC = () => {
   const [isRolling, setIsRolling] = useState(false)
   const [selectedNumber, setSelectedNumber] = useState<number>()
   const [saying, setSaying] = useState<string | undefined>()
+  const [isClient, setIsClient] = useState(false)
+  const [eventElements, setEventElements] = useState<React.ReactElement[]>([])
 
   const handleRoll = () => {
+    eventRunner(warningElementGenerator, setEventElements)
+    const robotSong = new Audio('/goombingo/irobot.mp3')
+    robotSong.play()
     if (!isRolling) {
       setIsRolling(true)
       const {winningNumber, newGameArray} = getWinningNumber(remainingItems)
@@ -69,7 +112,18 @@ const Page: React.FC = () => {
     }
   }
 
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   return <main className={styles.main}>
+    {
+      <>{eventElements.map(element => element)}</>
+    }
+    <img
+      className={styles.robotGif}
+      src="/goombingo/robodance.gif"
+    />
     <h1 className={rockSalt.className}>Goommunity Bingomi</h1>
     {
       saying !== undefined &&
@@ -88,33 +142,18 @@ const Page: React.FC = () => {
         <Button
           disabled={isRolling}
           onClick={handleRoll}
+          toggleGlitch={isRolling}
         >
           Roll
         </Button>
       </div>
-      <div className={styles.boardWrapper}>
-        {
-          gameArray.map(item =>
-            <div
-              key={item}
-              onClick={() => {
-                if (!isRolling) {
-                  if (remainingItems.includes(item)) {
-                    setRemainingItems(remainingItems.filter(number => item !== number))
-                  } else {
-                    setRemainingItems([...remainingItems, item])
-                  }
-                }
-              }}
-              className={`
-            ${styles.boardItem} 
-            ${!remainingItems.includes(item) ? styles.selectedItem : ''} 
-            ${item === selectedItem ? styles.rolledItem : ''}`}
-            >
-              {item}
-            </div>)
-        }
-      </div>
+      <CallerBoard
+        gameArray={gameArray}
+        isRolling={isRolling}
+        remainingItems={remainingItems}
+        setRemainingItems={setRemainingItems}
+        selectedItem={selectedItem}
+      />
     </div>
   </main>
 }

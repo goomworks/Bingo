@@ -7,6 +7,28 @@
     align-items: center;
     gap: 64px;
     background: black url("/goombingo/gomioldge.png") no-repeat right bottom;
+    overflow: hidden;
+    background-size: 20%;
+}
+.robotGif {
+    position: absolute;
+    animation-name: example;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes example {
+    0%   {background-color:red; left:50%; top:50%;}
+    5%  {background-color:yellow; left:200px; top:0px;}
+    50%  {background-color:blue; left:80%; top:200px;}
+    75%  {background-color:green; left:0px; top:200px;}
+    100% {background-color:red; left:50%; top:50%;}
+}
+
+
+.warning {
+    white-space: nowrap;
+    position: absolute;
 }
 
 .main h1 {
@@ -27,39 +49,6 @@
     align-items: center;
     max-width: 900px;
     gap: 128px;
-}
-
-.boardWrapper {
-    display: grid;
-    grid-template-columns: repeat(10, 60px);
-    justify-items: center;
-    gap: 8px;
-    color: white;
-    border: 1px solid rgba(100, 100, 100, 0.5);
-    background: rgba(0, 0, 0, 0.84);
-    border-radius: 8px;
-    padding: 16px;
-}
-
-.boardItem {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 25px;
-    width: 25px;
-    padding: 20px;
-    cursor: pointer;
-}
-
-.selectedItem {
-    background: #e8e8e8;
-    color: #0a0a0a;
-    border-radius: 4px;
-}
-
-.rolledItem {
-    background: red;
-    border-radius: 50%;
 }
 
 .resultWrapper {
